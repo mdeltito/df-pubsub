@@ -1,0 +1,16 @@
+services:
+  redis:
+    # image: redis:8
+    image: ghcr.io/dragonflydb/dragonfly:latest
+    ulimits:
+      memlock: -1
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+    command: node index.js
